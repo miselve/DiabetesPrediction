@@ -6,6 +6,9 @@ import App from './App';
 //import reportWebVitals from './reportWebVitals';
 
 const rootElement = document.getElementById('root');
+//document.body.classList.add('bg-dark'); // Add the Bootstrap dark theme class to the body
+document.body.style.backgroundColor = '#1a1e21'; // Set the background color to the Bootstrap dark theme color
+
 
 ReactDOM.render(
   <React.StrictMode>
