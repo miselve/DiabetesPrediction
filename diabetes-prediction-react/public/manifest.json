@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Diabetes Prediction",
+  "name": "ML Deployment of a Diabetes Prediction dataset using MLP",
   "icons": [
     {
       "src": "favicon.ico",
