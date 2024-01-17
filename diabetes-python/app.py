@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -32,17 +32,13 @@ def train():
         # Load the diabetes dataset from CSV
         print("Loading the dataset")
         diabetes_df = pd.read_csv('diabetes.csv')
-
         # Separate features (X) and target variable (y)
         X = diabetes_df.drop('Outcome', axis=1)
         y = diabetes_df['Outcome']
-
         # Shuffle the data
         X, y = shuffle(X, y, random_state=42)
-
         # Standardize the features using StandardScaler
         X = scaler.fit_transform(X)
-
         # Split the data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -65,7 +61,7 @@ def train():
         clf.set_params(**best_params)
 
         # Train the MLP classifier
-        print("Train the MLP classifier")
+        print("Train the MLP classifier") 
         clf.fit(X_train, y_train)
 
         # Evaluate the model
@@ -79,7 +75,7 @@ def train():
 
 
 @app.route('/predict', methods=['POST'])
-@cross_origin(origin='*',headers=['Content- Type','Authorization'], supports_credentials=True)
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'], supports_credentials=True)
 
 def predict():
     try:
@@ -101,17 +97,30 @@ def predict():
         # Normalize the features using the same scaler used during training
         normalized_features = scaler.transform([features])
 
-        # Make the prediction using the raw model without transformation
-        raw_prediction = clf.predict(normalized_features)[0]
-        print("Raw Prediction:", raw_prediction)
+        # Use predict_proba instead of predict
+        probability_estimate = clf.predict_proba(normalized_features)[0]
+        print("Probability Estimate:", probability_estimate)
 
-        
+        # Extract the probability associated with the positive class
+        confidence = 0
+
         # Use a threshold (e.g., 0.5) to convert probability to binary prediction
-        prediction = int(raw_prediction > 0.5)
+        prediction = int(confidence > 0.5)
         print("Binary Prediction:", prediction)
 
-        response = jsonify({'prediction': int(prediction), 'raw_prediction': float(raw_prediction)})
+        if prediction:
+            confidence = probability_estimate[1]
+        else:
+            confidence = probability_estimate[0]
 
+        formatted_confidence = "{:.2%}".format(confidence)
+
+        response = make_response(jsonify({'prediction': int(prediction), 'confidence': "The Prediction Confidence is: {:.2%}".format(confidence)}))
+
+
+        # Set headers for preflight requests
+        #response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        #response.headers.add('Access-Control-Allow-Methods', 'POST')
         #response.headers.add('Access-Control-Allow-Origin', '*')
 
         return response
