@@ -102,10 +102,10 @@ def predict():
         print("Probability Estimate:", probability_estimate)
 
         # Extract the probability associated with the positive class
-        confidence = 0
+        probability_1 = confidence = probability_estimate[1]
 
         # Use a threshold (e.g., 0.5) to convert probability to binary prediction
-        prediction = int(confidence > 0.5)
+        prediction = int(probability_1 > 0.5)
         print("Binary Prediction:", prediction)
 
         if prediction:
