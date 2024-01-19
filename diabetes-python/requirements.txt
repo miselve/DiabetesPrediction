@@ -5,4 +5,5 @@ flask-cors
 pandas
 flask_talisman
 pyopenssl
+shap
 
