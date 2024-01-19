@@ -1,11 +1,8 @@
 // Inputform.js
 import React, { useState } from 'react';
-import { Card, Form, FormGroup, Button, Alert, ThemeProvider, CardFooter } from 'react-bootstrap';
+import { Card, Form, FormGroup, Button, Alert } from 'react-bootstrap';
 
 const InputForm = ({ onSubmit }) => {
-
-  const [prediction, setPrediction] = useState(null);
-
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
@@ -76,108 +73,108 @@ const InputForm = ({ onSubmit }) => {
           Please fill in all required fields.
         </Alert>
       )}
-      
-    <Card data-bs-theme="dark" border="secondary" bg='#1a1e21'>
-      <Card.Header as="h5" bg={'primary'}>Diabetes Prediction</Card.Header>
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup controlId="Pregnancies">
-            <Form.Label>Pregnancies</Form.Label>
-            <Form.Control
-              type="number"
-              name="Pregnancies"
-              value={formData.Pregnancies || ''}
-              onChange={handleChange}
-            />
-            {formErrors.Pregnancies && <small className="text-danger">{formErrors.Pregnancies}</small>}
-          </FormGroup>
 
-          <FormGroup controlId="Glucose">
-            <Form.Label>Glucose</Form.Label>
-            <Form.Control
-              type="number"
-              name="Glucose"
-              value={formData.Glucose || ''}
-              onChange={handleChange}
-            />
-            {formErrors.Glucose && <small className="text-danger">{formErrors.Glucose}</small>}
-          </FormGroup>
+      <Card data-bs-theme="dark" border="secondary" bg='#1a1e21'>
+        <Card.Header as="h5" bg={'primary'}>Diabetes Prediction</Card.Header>
+        <Card.Body>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup controlId="Pregnancies">
+              <Form.Label>Pregnancies</Form.Label>
+              <Form.Control
+                type="number"
+                name="Pregnancies"
+                value={formData.Pregnancies || ''}
+                onChange={handleChange}
+              />
+              {formErrors.Pregnancies && <small className="text-danger">{formErrors.Pregnancies}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="BloodPressure">
-            <Form.Label>Blood Pressure</Form.Label>
-            <Form.Control
-              type="number"
-              name="BloodPressure"
-              value={formData.BloodPressure || ''}
-              onChange={handleChange}
-            />
-            {formErrors.BloodPressure && <small className="text-danger">{formErrors.BloodPressure}</small>}
-          </FormGroup>
+            <FormGroup controlId="Glucose">
+              <Form.Label>Glucose</Form.Label>
+              <Form.Control
+                type="number"
+                name="Glucose"
+                value={formData.Glucose || ''}
+                onChange={handleChange}
+              />
+              {formErrors.Glucose && <small className="text-danger">{formErrors.Glucose}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="SkinThickness">
-            <Form.Label>Skin Thickness</Form.Label>
-            <Form.Control
-              type="number"
-              name="SkinThickness"
-              value={formData.SkinThickness || ''}
-              onChange={handleChange}
-            />
-            {formErrors.SkinThickness && <small className="text-danger">{formErrors.SkinThickness}</small>}
-          </FormGroup>
+            <FormGroup controlId="BloodPressure">
+              <Form.Label>Blood Pressure</Form.Label>
+              <Form.Control
+                type="number"
+                name="BloodPressure"
+                value={formData.BloodPressure || ''}
+                onChange={handleChange}
+              />
+              {formErrors.BloodPressure && <small className="text-danger">{formErrors.BloodPressure}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="Insulin">
-            <Form.Label>Insulin</Form.Label>
-            <Form.Control
-              type="number"
-              name="Insulin"
-              value={formData.Insulin || ''}
-              onChange={handleChange}
-            />
-            {formErrors.Insulin && <small className="text-danger">{formErrors.Insulin}</small>}
-          </FormGroup>
+            <FormGroup controlId="SkinThickness">
+              <Form.Label>Skin Thickness</Form.Label>
+              <Form.Control
+                type="number"
+                name="SkinThickness"
+                value={formData.SkinThickness || ''}
+                onChange={handleChange}
+              />
+              {formErrors.SkinThickness && <small className="text-danger">{formErrors.SkinThickness}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="BMI">
-            <Form.Label>BMI (Body Mass Index)</Form.Label>
-            <Form.Control
-              type="number"
-              name="BMI"
-              value={formData.BMI || ''}
-              onChange={handleChange}
-            />
-            {formErrors.BMI && <small className="text-danger">{formErrors.BMI}</small>}
-          </FormGroup>
+            <FormGroup controlId="Insulin">
+              <Form.Label>Insulin</Form.Label>
+              <Form.Control
+                type="number"
+                name="Insulin"
+                value={formData.Insulin || ''}
+                onChange={handleChange}
+              />
+              {formErrors.Insulin && <small className="text-danger">{formErrors.Insulin}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="DiabetesPedigreeFunction">
-            <Form.Label>Diabetes Pedigree Function</Form.Label>
-            <Form.Control
-              type="number"
-              name="DiabetesPedigreeFunction"
-              value={formData.DiabetesPedigreeFunction || ''}
-              onChange={handleChange}
-            />
-            {formErrors.DiabetesPedigreeFunction && (
-              <small className="text-danger">{formErrors.DiabetesPedigreeFunction}</small>
-            )}
-          </FormGroup>
+            <FormGroup controlId="BMI">
+              <Form.Label>BMI (Body Mass Index)</Form.Label>
+              <Form.Control
+                type="number"
+                name="BMI"
+                value={formData.BMI || ''}
+                onChange={handleChange}
+              />
+              {formErrors.BMI && <small className="text-danger">{formErrors.BMI}</small>}
+            </FormGroup>
 
-          <FormGroup controlId="Age">
-            <Form.Label>Age (in years)</Form.Label>
-            <Form.Control
-              type="number"
-              name="Age"
-              value={formData.Age || ''}
-              onChange={handleChange}
-            />
-            {formErrors.Age && <small className="text-danger">{formErrors.Age}</small>}
-          </FormGroup>
+            <FormGroup controlId="DiabetesPedigreeFunction">
+              <Form.Label>Diabetes Pedigree Function</Form.Label>
+              <Form.Control
+                type="number"
+                name="DiabetesPedigreeFunction"
+                value={formData.DiabetesPedigreeFunction || ''}
+                onChange={handleChange}
+              />
+              {formErrors.DiabetesPedigreeFunction && (
+                <small className="text-danger">{formErrors.DiabetesPedigreeFunction}</small>
+              )}
+            </FormGroup>
 
-          <Button type="submit" className="mx-auto d-block" style={{ marginTop: '10px' }}>
-            Submit
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
-    
+            <FormGroup controlId="Age">
+              <Form.Label>Age (in years)</Form.Label>
+              <Form.Control
+                type="number"
+                name="Age"
+                value={formData.Age || ''}
+                onChange={handleChange}
+              />
+              {formErrors.Age && <small className="text-danger">{formErrors.Age}</small>}
+            </FormGroup>
+
+            <Button type="submit" className="mx-auto d-block" style={{ marginTop: '10px' }}>
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+
     </>
   );
 };

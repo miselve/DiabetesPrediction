@@ -8,6 +8,8 @@ from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
 import pandas as pd
 import numpy as np
+import shap
+
 
 app = Flask(__name__)
 cors = CORS(app, support_credentials=True)
@@ -27,20 +29,23 @@ initial_params = {
 clf = MLPClassifier(**initial_params)
 scaler = MinMaxScaler()  # Instantiate MinMaxScaler
 
+# Load the diabetes dataset from CSV
+print("Loading the dataset")
+diabetes_df = pd.read_csv('diabetes.csv')
+# Separate features (X) and target variable (y)
+X = diabetes_df.drop('Outcome', axis=1)
+y = diabetes_df['Outcome']
+# Shuffle the data
+X, y = shuffle(X, y, random_state=42)
+# Standardize the features using StandardScaler
+feature_names = X.columns.tolist()
+X = scaler.fit_transform(X)
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
 def train():
     try:
-        # Load the diabetes dataset from CSV
-        print("Loading the dataset")
-        diabetes_df = pd.read_csv('diabetes.csv')
-        # Separate features (X) and target variable (y)
-        X = diabetes_df.drop('Outcome', axis=1)
-        y = diabetes_df['Outcome']
-        # Shuffle the data
-        X, y = shuffle(X, y, random_state=42)
-        # Standardize the features using StandardScaler
-        X = scaler.fit_transform(X)
-        # Split the data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+       
 
         # Hyperparameter tuning using GridSearchCV with parallel processing
         param_grid = {
@@ -79,6 +84,10 @@ def train():
 
 def predict():
     try:
+
+        def predict_function(X):
+            return clf.predict_proba(X)[:, 1]
+
         # Get the data from the request
         data = request.get_json()
 
@@ -101,6 +110,30 @@ def predict():
         probability_estimate = clf.predict_proba(normalized_features)[0]
         print("Probability Estimate:", probability_estimate)
 
+        # Test using shap
+        explainer = shap.KernelExplainer(predict_function, data=X_train)
+        shap_values = explainer.shap_values(normalized_features)
+
+        # Convert NumPy arrays to lists
+        shap_values_list = shap_values[0].tolist()
+
+        # Calculate absolute values and total_shap
+        absolute_values = [abs(value) for value in shap_values_list]
+        total_shap = sum(absolute_values)
+
+        # Calculate percentage contributions
+        percentage_contributions = [value / total_shap *100 for value in absolute_values]
+
+        # Create a dictionary to store feature names and percentage contributions
+        feature_contributions = {feature: percentage for feature, percentage in zip(feature_names, percentage_contributions)}
+        
+
+        
+        formatted_feature_contributions = "\n".join([f"{feature}: <strong>{percentage:.2f}%</strong>" for feature, percentage in feature_contributions.items()])
+
+
+
+
         # Extract the probability associated with the positive class
         probability_1 = confidence = probability_estimate[1]
 
@@ -115,7 +148,7 @@ def predict():
 
         formatted_confidence = "{:.2%}".format(confidence)
 
-        response = make_response(jsonify({'prediction': int(prediction), 'confidence': "The Prediction Confidence is: {:.2%}".format(confidence)}))
+        response = make_response(jsonify({'prediction': int(prediction),'feature_contributions': formatted_feature_contributions, 'confidence': "The Prediction Confidence is: {:.2%}".format(confidence)}))
 
 
         # Set headers for preflight requests
