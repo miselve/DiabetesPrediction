@@ -9,6 +9,9 @@ from sklearn.metrics import classification_report
 import pandas as pd
 import numpy as np
 import shap
+import io
+import base64
+import matplotlib.pyplot as plt
 
 
 app = Flask(__name__)
@@ -45,8 +48,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 def train():
     try:
-       
-
         # Hyperparameter tuning using GridSearchCV with parallel processing
         param_grid = {
             'alpha': [0.01, 0.05, 0.1],
@@ -111,8 +112,17 @@ def predict():
         print("Probability Estimate:", probability_estimate)
 
         # Test using shap
+        #shap.initjs()
         explainer = shap.KernelExplainer(predict_function, data=X_train)
         shap_values = explainer.shap_values(normalized_features)
+
+        buffer = io.BytesIO()
+        shap_plot = shap.plots.force(explainer.expected_value, shap_values, np.array(['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']), show=False,matplotlib=True).savefig(buffer,format = "png",dpi = 150,bbox_inches = 'tight')
+        buffer.seek(0)
+        # Convert the image to a base64-encoded string
+        plot_data_uri = base64.b64encode(buffer.read()).decode('utf-8')
+        buffer.close()  # Close the buffer to avoid memory leaks
+
 
         # Convert NumPy arrays to lists
         shap_values_list = shap_values[0].tolist()
@@ -126,13 +136,8 @@ def predict():
 
         # Create a dictionary to store feature names and percentage contributions
         feature_contributions = {feature: percentage for feature, percentage in zip(feature_names, percentage_contributions)}
-        
-
-        
+ 
         formatted_feature_contributions = "\n".join([f"{feature}: <strong>{percentage:.2f}%</strong>" for feature, percentage in feature_contributions.items()])
-
-
-
 
         # Extract the probability associated with the positive class
         probability_1 = confidence = probability_estimate[1]
@@ -148,7 +153,7 @@ def predict():
 
         formatted_confidence = "{:.2%}".format(confidence)
 
-        response = make_response(jsonify({'prediction': int(prediction),'feature_contributions': formatted_feature_contributions, 'confidence': "The Prediction Confidence is: {:.2%}".format(confidence)}))
+        response = make_response(jsonify({'prediction': int(prediction),'feature_contributions': formatted_feature_contributions, 'confidence': "The Prediction Confidence is: {:.2%}".format(confidence), 'shap_summary_plot': f"data:image/png;base64,{plot_data_uri}"}))
 
 
         # Set headers for preflight requests

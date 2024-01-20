@@ -6,4 +6,5 @@ pandas
 flask_talisman
 pyopenssl
 shap
+matplotlib
 
