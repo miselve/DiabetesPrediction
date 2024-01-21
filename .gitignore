@@ -1,1 +1,6 @@
 diabetes-python/Lib/
+diabetes-python/share/
+diabetes-python/Scripts/
+diabetes-prediction-react/node_modules
+diabetes-prediction-react/build
+
