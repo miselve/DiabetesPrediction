@@ -22,6 +22,7 @@ jobs:
       run: |
         cd diabetes-prediction-react
         npm install
+        npm install -g serve
 
     - name: Setup Python
       uses: actions/setup-python@v2
@@ -37,9 +38,11 @@ jobs:
       run: |
         cd diabetes-prediction-react
         npm run build
+        serve -s build
         # Add commands to start your Node.js app here
 
     - name: Deploy Flask App
       run: |
         cd diabetes-python
+        python app.py
         # Add commands to start your Flask app here
