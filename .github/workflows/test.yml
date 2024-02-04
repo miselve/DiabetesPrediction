@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy_node:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,20 @@ jobs:
         npm install
         npm install -g serve
 
+    - name: Deploy Node.js App
+      run: |
+        cd diabetes-prediction-react
+        npm run build
+        serve -s build
+        # Add commands to start your Node.js app here, if needed
+
+  deploy_python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
@@ -34,15 +48,10 @@ jobs:
         cd diabetes-python
         pip install -r requirements.txt
 
-    - name: Deploy Node.js App
-      run: |
-        cd diabetes-prediction-react
-        npm run build
-        serve -s build
-        # Add commands to start your Node.js app here
-
     - name: Deploy Flask App
       run: |
         cd diabetes-python
         python app.py
-        # Add commands to start your Flask app here
+        # Add commands to start your Flask app here, if needed
+
+# Add additional steps or adjustments based on your specific requirements
