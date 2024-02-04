@@ -28,6 +28,7 @@ jobs:
       run: |
         cd diabetes-prediction-react
         npm run build
+        curl ifconfig.me
         serve -s build
         # Add commands to start your Node.js app here, if needed
 
@@ -51,6 +52,7 @@ jobs:
     - name: Deploy Flask App
       run: |
         cd diabetes-python
+        curl ifconfig.me
         python app.py
         # Add commands to start your Flask app here, if needed
 
