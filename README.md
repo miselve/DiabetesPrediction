@@ -5,18 +5,26 @@ This repository contains a web application that predicts the likelihood of diabe
 
 ## Table of Contents
 1. [Architecture](#architecture)
-2. [Machine Learning Model](#machine-learning-model)
-3. [Backend - Flask API](#backend---flask-api)
-4. [Frontend - React.js](#frontend---reactjs)
-5. [Installation](#installation)
-6. [Usage](#usage)
-7. [Conclusion](#conclusion)
+2. [Screenshots](#screenshots)
+3. [Machine Learning Model](#machine-learning-model)
+4. [Backend - Flask API](#backend---flask-api)
+5. [Frontend - React.js](#frontend---reactjs)
+6. [Installation](#installation)
+7. [Usage](#usage)
+8. [Conclusion](#conclusion)
 
 ## Architecture
 The application follows a typical web application architecture with a clear separation between the frontend and backend:
 - **Frontend:** Developed using React.js, it provides a user interface for entering data and viewing predictions.
 - **Backend:** A Flask application serving as a REST API that handles incoming data, processes it using the machine learning model, and returns the prediction.
 - **Machine Learning:** The model is trained using the Diabetes dataset with optimization performed using `GridSearchCV`.
+
+## Screenshots
+
+| Main App| Feature Contributions |
+|---------|---------|
+| ![Image 1](https://github.com/user-attachments/assets/eb7282c5-197f-4b98-8e6a-f17c61098319) | ![Image 2](https://github.com/user-attachments/assets/2fd0b666-b7b5-4b62-bf74-a9f5ca6946d3) |
+
 
 ## Machine Learning Model
 - **Dataset:** The application uses the Diabetes dataset, loaded from a CSV file.
