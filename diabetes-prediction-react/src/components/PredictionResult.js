@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Card, Button, Modal, Spinner,Image } from 'react-bootstrap';
+import AboutModal from './AboutModal';
 
 const PredictionResult = ({ prediction, confidence, featureContributions, loading, shap_summary_plot }) => {
   const [showModal, setShowModal] = useState(false);
@@ -10,8 +11,8 @@ const PredictionResult = ({ prediction, confidence, featureContributions, loadin
   return (
     <Card data-bs-theme="dark" border="secondary" bg="#1a1e21" style={{ marginTop: '10px' }}>
       <Card.Body>
-        <Container className="text-center" style={{ marginBottom: '1px' }}>
-          <h1 className="mx-auto">Prediction Result:</h1>
+        <Container style={{ marginBottom: '1px' }}  className="mx-auto text-center">
+          <h1 className="mx-auto text-center">Prediction Result:</h1>
 
           {loading ? (
             <div className="text-center" style={{ marginTop: '20px' }}>
@@ -62,7 +63,9 @@ const PredictionResult = ({ prediction, confidence, featureContributions, loadin
           )}
         </Container>
       </Card.Body>
-      <Card.Footer className="text-center">Michael Selvesakis © 2024</Card.Footer>
+      <Card.Footer className="text-center">Michael Selvesakis © 2024 <br/>
+        <AboutModal/>
+      </Card.Footer>
     </Card>
   );
 };
